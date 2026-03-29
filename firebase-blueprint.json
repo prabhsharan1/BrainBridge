@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user profile information, including role, progress, and preferences.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "name": { "type": "string", "description": "The user's display name." },
+        "role": { "type": "string", "enum": ["student", "teacher"], "description": "The user's role." },
+        "grade": { "type": "string", "description": "The student's grade level." },
+        "classCode": { "type": "string", "description": "The class code for students." },
+        "avatarSeed": { "type": "string", "description": "Seed for the user's avatar." },
+        "xp": { "type": "integer", "description": "Total experience points earned." },
+        "streak": { "type": "integer", "description": "Current daily streak." },
+        "homeLanguage": { "type": "string", "description": "The user's native language." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created." }
+      },
+      "required": ["uid", "name", "role", "avatarSeed", "xp", "streak"]
+    },
+    "Mission": {
+      "title": "Mission",
+      "description": "Represents a learning mission or task.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "description": { "type": "string" },
+        "xp": { "type": "integer" },
+        "skill": { "type": "string" },
+        "content": { "type": "object" }
+      },
+      "required": ["id", "title", "subject", "xp"]
+    },
+    "Session": {
+      "title": "Learning Session",
+      "description": "Tracks a student's activity during a mission or notepad session.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "missionId": { "type": "string" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "endTime": { "type": "string", "format": "date-time" },
+        "transcript": { "type": "string" },
+        "feedback": { "type": "object" }
+      },
+      "required": ["studentId", "startTime"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles indexed by UID."
+    },
+    "/missions/{missionId}": {
+      "schema": "Mission",
+      "description": "Available missions."
+    },
+    "/sessions/{sessionId}": {
+      "schema": "Session",
+      "description": "Learning sessions."
+    }
+  }
+}

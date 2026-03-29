@@ -1,0 +1,137 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (UID)
+    // Fields:
+    //   - uid: string (required, immutable) - The unique ID of the user.
+    //   - name: string (required, min: 1, max: 50) - The user's display name.
+    //   - role: string (required, enum: ['student', 'teacher']) - The user's role.
+    //   - grade: string (optional) - The student's grade level.
+    //   - classCode: string (optional) - The class code for students.
+    //   - avatarSeed: string (required) - Seed for the user's avatar.
+    //   - xp: number (required, min: 0) - Total experience points earned.
+    //   - streak: number (required, min: 0) - Current daily streak.
+    //   - homeLanguage: string (optional) - The user's native language.
+    //   - createdAt: timestamp (optional, immutable) - When the profile was created.
+    //
+    // Collection: missions
+    // Document ID: missionId
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - subject: string (required)
+    //   - description: string (optional)
+    //   - xp: number (required)
+    //   - skill: string (optional)
+    //   - content: map (optional)
+    //
+    // Collection: sessions
+    // Document ID: sessionId
+    // Fields:
+    //   - studentId: string (required, immutable)
+    //   - missionId: string (optional)
+    //   - startTime: timestamp (required, immutable)
+    //   - endTime: timestamp (optional)
+    //   - transcript: string (optional)
+    //   - feedback: map (optional)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "prabhsharansethiapps@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function areImmutableFieldsUnchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidUser(data) {
+      return hasRequiredFields(['uid', 'name', 'role', 'avatarSeed', 'xp', 'streak']) &&
+             hasOnlyAllowedFields(['uid', 'name', 'role', 'grade', 'classCode', 'avatarSeed', 'xp', 'streak', 'homeLanguage', 'createdAt']) &&
+             data.uid == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 50 &&
+             data.role in ['student', 'teacher'] &&
+             data.avatarSeed is string &&
+             data.xp is number && data.xp >= 0 &&
+             data.streak is number && data.streak >= 0;
+    }
+
+    function isValidMission(data) {
+      return hasRequiredFields(['id', 'title', 'subject', 'xp']) &&
+             data.id is string &&
+             data.title is string &&
+             data.subject is string &&
+             data.xp is number;
+    }
+
+    function isValidSession(data) {
+      return hasRequiredFields(['studentId', 'startTime']) &&
+             data.studentId == request.auth.uid &&
+             data.startTime is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role != 'admin' || isAdmin());
+      allow update: if (isOwner(userId) || isAdmin()) && isValidUser(request.resource.data) && 
+                      areImmutableFieldsUnchanged(['uid', 'createdAt']) &&
+                      (request.resource.data.role == resource.data.role || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /missions/{missionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /sessions/{sessionId} {
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.studentId || isAdmin());
+      allow create: if isAuthenticated() && isValidSession(request.resource.data);
+      allow update: if isAuthenticated() && (request.auth.uid == resource.data.studentId || isAdmin()) && 
+                      isValidSession(request.resource.data) &&
+                      areImmutableFieldsUnchanged(['studentId', 'startTime']);
+      allow delete: if isAdmin();
+    }
+  }
+}

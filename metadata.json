@@ -1,0 +1,7 @@
+{
+  "name": "Brain Bridge",
+  "description": "A friendly peer mentor for Grade 1-8 bilingual students to practice 'Power Words' and stay motivated on their learning adventure.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
