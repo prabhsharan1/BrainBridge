@@ -9,6 +9,8 @@ Over the past 8 weeks, my team and I set out to solve this exact problem at the 
 ## 👥 The Team
 * **Prabhsharan Singh Sethi:** Full-Stack Developer
 * **Laura Dávila:** UX & Ideation Lead 
+* **Mansi Katarey:** Product Validation & Testing
+* **Alexandra R.:** User Feedback & QA
 
 🔗 **[Read more about our journey on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7443411795307966464/)**
 
