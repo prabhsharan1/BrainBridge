@@ -4,6 +4,9 @@ For an ESL student or a newcomer to Canada, the biggest barrier in the classroom
 
 Over the past 8 weeks, my team and I set out to solve this exact problem at the **Futures Lab: An AI+UX Prototyping Workshop**, sponsored by Google and led by Prof. Edith Law at UWaterloo.
 
+[![BrainBridge App Screenshot](BrainBridge.png)]
+
+
 ## 👥 The Team
 * **Prabh:** Full-Stack Developer (React Architecture, Express Backend, Firebase Integration & AI Engineering)
 * **Laura:** UX & Ideation Lead (Feature Strategy & Brainstorming)
