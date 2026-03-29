@@ -7,8 +7,8 @@ For an ESL student or a newcomer to Canada, the biggest barrier in the classroom
 Over the past 8 weeks, my team and I set out to solve this exact problem at the **Futures Lab: An AI+UX Prototyping Workshop**, sponsored by Google and led by Prof. Edith Law at UWaterloo.
 
 ## 👥 The Team
-* **Prabh:** Full-Stack Developer (React Architecture, Express Backend, Firebase Integration & AI Engineering)
-* **Laura:** UX & Ideation Lead (Feature Strategy & Brainstorming)
+* **Prabhsharan Singh Sethi:** Full-Stack Developer (React Architecture, Express Backend, Firebase Integration & AI Engineering)
+* **Laura Dávila:** UX & Ideation Lead (Feature Strategy & Brainstorming)
 
 🔗 **[Read more about our journey on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7443411795307966464/)**
 
