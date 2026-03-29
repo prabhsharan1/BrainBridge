@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
-    projectId: process.env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0214083418",
+    projectId: process.env.VITE_FIREBASE_PROJECT_ID || "your-project-id",
   });
 }
 
