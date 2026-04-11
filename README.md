@@ -1,6 +1,7 @@
 # BrainBridge 🧠🌉
 
-![BrainBridge App Screenshot](BrainBridge.png)
+[![BrainBridge App Screenshot](BrainBridge.png)](https://youtu.be/N7Fysb7XIdI)
+*(Click the image above to watch our 90-second pitch!)*
 
 For an ESL student or a newcomer to Canada, the biggest barrier in the classroom isn't intelligence. It's the "confidence crisis"—the frustrating feeling of having incredible ideas, but lacking the immediate vocabulary to share them.
 
